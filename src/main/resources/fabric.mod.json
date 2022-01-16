@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "bordergods",
+  "version": "${version}",
+  "name": "Bordergods",
+  "description": "",
+  "authors": [
+    "onelikeandidie"
+  ],
+  "contact": {
+    "repo": "https://github.com/onelikeandidie/border-gods.git"
+  },
+  "license": "MIT",
+  "icon": "assets/bordergods/icon.png",
+  "environment": "server",
+  "entrypoints": {
+    "client": [
+      "net.onelikeandidie.bordergods.client.BordergodsClient"
+    ],
+    "main": [
+      "net.onelikeandidie.bordergods.Bordergods"
+    ]
+  },
+  "mixins": [
+    "bordergods.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.12.12",
+    "fabric": "*",
+    "minecraft": "1.18.1"
+  }
+}
