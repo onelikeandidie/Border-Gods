@@ -8,12 +8,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemEntity.class)
 public class DroppedInLavaMixin {
 
-    @Inject(method = "damage(Lnet/minecraft/entity/DamageSource;F)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ItemEntity;discard()V"))
-    private void onDamagedItemDiscard(CallbackInfo ci, DamageSource source, float amount) {
+    @Inject(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/ItemEntity;discard()V"))
+    private void onDamagedItemDiscard(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (source == DamageSource.LAVA) {
             var self = (ItemEntity) (Object) this;
             var player_uuid = self.getOwner();
@@ -23,8 +24,9 @@ public class DroppedInLavaMixin {
             ActionResult result = DroppedInLavaCallback.EVENT.invoker().interact(player, item_stack);
 
             if (result == ActionResult.FAIL) {
-                ci.cancel();
+                cir.cancel();
             }
         }
     }
+
 }
