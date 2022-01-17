@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 
 public interface DroppedInLavaCallback {
@@ -19,5 +20,5 @@ public interface DroppedInLavaCallback {
         return ActionResult.PASS;
     });
 
-    ActionResult interact(PlayerEntity player, Item item);
+    ActionResult interact(PlayerEntity player, ItemStack item);
 }
