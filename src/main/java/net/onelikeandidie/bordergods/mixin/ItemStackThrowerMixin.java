@@ -1,19 +1,24 @@
 package net.onelikeandidie.bordergods.mixin;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.onelikeandidie.bordergods.util.IItemEntityThrower;
+import net.onelikeandidie.bordergods.util.IItemStackThrower;
 import org.spongepowered.asm.mixin.Mixin;
 
-@Mixin(ItemStack.class)
-public abstract class ItemStackThrowerMixin implements IItemEntityThrower {
-    private NbtCompound thrownByUUID;
+import javax.annotation.Nullable;
+import java.util.UUID;
 
+@Mixin(ItemStack.class)
+public abstract class ItemStackThrowerMixin implements IItemStackThrower {
+    @Nullable
+    private UUID thrownByUUID;
+
+    @Nullable
     @Override
-    public NbtCompound getThrownByUUID() {
-        if (this.thrownByUUID == null) {
-            this.thrownByUUID = new NbtCompound();
-        }
+    public UUID getThrownByUUID() {
         return this.thrownByUUID;
+    }
+
+    public void setThrownByUUID(@Nullable UUID thrownByUUID) {
+        this.thrownByUUID = thrownByUUID;
     }
 }
