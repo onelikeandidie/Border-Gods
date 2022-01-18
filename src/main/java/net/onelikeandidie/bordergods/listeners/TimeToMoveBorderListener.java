@@ -16,7 +16,7 @@ public class TimeToMoveBorderListener {
 
     public ActionResult timeToMoveBorder() {
         var logger = LogManager.getLogger("bordergods");
-
+        logger.info("Border supposedly moved");
         return ActionResult.PASS;
     }
 }
