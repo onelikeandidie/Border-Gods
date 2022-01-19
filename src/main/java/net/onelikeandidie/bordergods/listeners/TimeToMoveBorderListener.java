@@ -1,8 +1,9 @@
 package net.onelikeandidie.bordergods.listeners;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ActionResult;
 import net.onelikeandidie.bordergods.events.TimeToMoveBorderCallback;
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +18,22 @@ public class TimeToMoveBorderListener {
     public ActionResult timeToMoveBorder() {
         var logger = LogManager.getLogger("bordergods");
         logger.info("Border supposedly moved");
+        MinecraftServer server = null;
+        EnvType environmentType = FabricLoader.getInstance().getEnvironmentType();
+        if (environmentType == EnvType.SERVER) {
+            server = (MinecraftServer) FabricLoader.getInstance().getGameInstance();
+        } //else if (environmentType == EnvType.CLIENT){
+            //server = MinecraftClient.getInstance().getServer();
+        //}
+        if (server == null) {
+            return ActionResult.PASS;
+        }
+        var worlds = server.getWorlds();
+        worlds.forEach(serverWorld -> {
+            var currentBorder = serverWorld.getWorldBorder().getSize();
+            var finalBorderSize = currentBorder + 6;
+            serverWorld.getWorldBorder().setSize(finalBorderSize);
+        });
         return ActionResult.PASS;
     }
 }

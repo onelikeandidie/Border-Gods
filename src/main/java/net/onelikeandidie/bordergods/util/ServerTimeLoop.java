@@ -22,6 +22,7 @@ public class ServerTimeLoop {
                 var cal = Calendar.getInstance();
                 // This hour is in 24-hour format
                 var currentHour = cal.get(Calendar.HOUR_OF_DAY);
+                logger.info("{} == {}", lastHour, currentHour);
                 if (currentHour != lastHour) {
                     // This means the hour has changed
                     lastHour = currentHour;
@@ -31,12 +32,12 @@ public class ServerTimeLoop {
         };
         var cal = Calendar.getInstance();
         var millisecondsUntilNextHour = millisecondsTillTheHour(cal);
-        timer.schedule(timerTask, millisecondsUntilNextHour + 1000, MILLISECONDS_IN_AN_HOUR);
-        logger.info("Next task will execute on: {}", millisecondsUntilNextHour);
+        timer.schedule(timerTask, millisecondsUntilNextHour, MILLISECONDS_IN_AN_HOUR);
+        logger.info("Next task will execute in: {}ms", millisecondsUntilNextHour);
     }
 
     static void hourPassed(int newHour) {
-        if (newHour == 5) {
+        if (newHour == 17) {
             TimeToMoveBorderCallback.EVENT.invoker().interact();
         }
     }
