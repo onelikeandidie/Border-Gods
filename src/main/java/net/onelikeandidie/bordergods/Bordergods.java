@@ -28,6 +28,13 @@ public class Bordergods implements ModInitializer {
         lavaListener.register();
         var borderListener = new TimeToMoveBorderListener();
         borderListener.register();
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER) {
+            var spl = FabricLoader.getInstance().isModLoaded("styledplayerlist");
+            // Register placeholder stuff for messages and player list
+            if (spl) {
+                GodPlaceholderAPI.register();
+            }
+        }
         LOGGER.info("Border Gods Mod Initialized!!!.");
     }
 }
