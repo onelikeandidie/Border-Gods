@@ -1,5 +1,6 @@
 package net.onelikeandidie.bordergods.listeners;
 
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
@@ -14,11 +15,8 @@ public class DropInLavaListener {
         logger.info("Now listening for items dropped in Lava");
     }
 
-    public ActionResult droppedInLava(PlayerEntity player, ItemStack item) {
+    public ActionResult droppedInLava(PlayerEntity player, BlockEntity block, ItemStack item) {
         var logger = LogManager.getLogger("bordergods");
-        var item_id = item;
-        logger.info(player.getDisplayName().getString() + " has sacrificed " + item.getCount() + " " + item.getItem().getName().getString() + " to the border.");
-        player.sendMessage(Text.of("You have sacrificed " + item.getCount() + " " + item.getItem().getName().getString() + " to the Border Gods"), false);
         return ActionResult.PASS;
     }
 }

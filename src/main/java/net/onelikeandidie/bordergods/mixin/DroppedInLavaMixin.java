@@ -27,7 +27,8 @@ public class DroppedInLavaMixin {
             if (player == null) {
                 return;
             }
-            ActionResult result = DroppedInLavaCallback.EVENT.invoker().interact(player, item_stack);
+            var block = world.getBlockEntity(self.getBlockPos());
+            ActionResult result = DroppedInLavaCallback.EVENT.invoker().interact(player, block, item_stack);
 
             if (result == ActionResult.FAIL) {
                 cir.cancel();

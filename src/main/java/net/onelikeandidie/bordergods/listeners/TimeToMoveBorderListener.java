@@ -1,6 +1,7 @@
 package net.onelikeandidie.bordergods.listeners;
 
 import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.server.MinecraftServer;
@@ -22,9 +23,9 @@ public class TimeToMoveBorderListener {
         EnvType environmentType = FabricLoader.getInstance().getEnvironmentType();
         if (environmentType == EnvType.SERVER) {
             server = (MinecraftServer) FabricLoader.getInstance().getGameInstance();
-        } //else if (environmentType == EnvType.CLIENT){
-            //server = MinecraftClient.getInstance().getServer();
-        //}
+        } else if (environmentType == EnvType.CLIENT){
+            server = getIntegratedServer();
+        }
         if (server == null) {
             return ActionResult.PASS;
         }
@@ -35,5 +36,10 @@ public class TimeToMoveBorderListener {
             serverWorld.getWorldBorder().setSize(finalBorderSize);
         });
         return ActionResult.PASS;
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static MinecraftServer getIntegratedServer() {
+        return MinecraftClient.getInstance().getServer();
     }
 }
