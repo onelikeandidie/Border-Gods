@@ -21,7 +21,5 @@ public class AddWhoDroppedItemMixin {
             return;
         }
         stack_cast.setThrownByUUID(self.getUuid());
-        Logger logger = LogManager.getLogger("bordergods");
-        logger.info(stack_cast.getThrownByUUID());
     }
 }
