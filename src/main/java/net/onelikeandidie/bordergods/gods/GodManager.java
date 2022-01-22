@@ -62,7 +62,7 @@ public class GodManager {
         for (IGod god : gods) {
             text.append(god.getName());
             text.append(": ");
-            text.append(Float.toString(god.getSatisfaction()));
+            text.append(String.format("%.2f", god.getSatisfaction()));
             text.append("\n");
         }
         return text;

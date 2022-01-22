@@ -21,7 +21,7 @@ public class TimeToMoveBorderListener {
         MinecraftServer server = getServer();
         var worlds = server.getWorlds();
         worlds.forEach(serverWorld -> {
-            add(serverWorld, 6, 120);
+            add(serverWorld, 6, 1000);
         });
         return ActionResult.PASS;
     }

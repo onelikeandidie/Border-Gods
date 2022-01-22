@@ -8,6 +8,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
 import net.onelikeandidie.bordergods.util.Border;
+import net.onelikeandidie.bordergods.util.ServerUtils;
 
 public class Enorma implements IGod {
     static final String GOD_NAME = "Enorma";
@@ -54,8 +55,7 @@ public class Enorma implements IGod {
         }
         var world = player.getWorld();
         var increase = calculateNewBorder(stack_value, world);
-        player.sendMessage(Text.of(Double.toString(increase)), false);
-        Border.add(world, increase, 100);
+        Border.add(world, increase, 1000);
         return ActionResult.PASS;
     }
 
@@ -88,9 +88,9 @@ public class Enorma implements IGod {
                 result += getItemValue(item.getItem()) / satisfaction;
                 if (updateSatisfaction) {
                     if (value > 0) {
-                        satisfaction *= 1.2;
+                        satisfaction *= 1.1;
                     } else if (value < 0) {
-                        satisfaction *= 0.8;
+                        satisfaction *= 0.9;
                     }
                     if (satisfaction > maxSatisfaction) {
                         satisfaction = maxSatisfaction;
@@ -106,9 +106,16 @@ public class Enorma implements IGod {
     private int getItemValue(Item item) {
         var itemName = item.getTranslationKey();
         return switch (itemName) {
+            // ENORMA LIKES SHINY
             case "item.minecraft.diamond" -> 64;
+            case "item.minecraft.gold_ingot" -> 32;
+            case "item.minecraft.emerald" -> 32;
+            case "item.minecraft.amethyst_shard" -> 32;
+            // HAHA YOU CAN'T BURN THIS ONE IN LAVA
             case "item.minecraft.netherite_ingot" -> 128;
+            // ENORMA DOESN'T LIKE PLANTS
             case "block.minecraft.lily_pad" -> -64;
+            case "block.minecraft.sugar_cane" -> -64;
             default -> 0;
         };
     }
