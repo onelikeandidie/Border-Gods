@@ -14,10 +14,11 @@ public class Enorma implements IGod {
     static final Text GOD_NAME_FORMATED = Text.of(GOD_NAME);
     float satisfaction;
     static final float maxSatisfaction = 20;
+    static final float minSatisfaction = 1;
     float lastOfferingTime;
 
     Enorma() {
-        satisfaction = 0;
+        satisfaction = 1;
     }
 
     @Override
@@ -28,6 +29,14 @@ public class Enorma implements IGod {
     @Override
     public float getSatisfaction() {
         return satisfaction;
+    }
+
+    @Override
+    public void resetSatisfaction() {
+        satisfaction -= 15;
+        if (satisfaction < 1) {
+            satisfaction = 1;
+        }
     }
 
     @Override
@@ -46,7 +55,7 @@ public class Enorma implements IGod {
         var world = player.getWorld();
         var increase = calculateNewBorder(stack_value, world);
         player.sendMessage(Text.of(Double.toString(increase)), false);
-        Border.add(world, increase, 120);
+        Border.add(world, increase, 100);
         return ActionResult.PASS;
     }
 
@@ -74,12 +83,20 @@ public class Enorma implements IGod {
     private double getItemStackValue(ItemStack item, boolean updateSatisfaction) {
         double result = 0;
         for (int i = 0; i < item.getCount(); i++) {
-            result += getItemValue(item.getItem()) / satisfaction;
-            if (updateSatisfaction) {
-                if (satisfaction > maxSatisfaction) {
-                    satisfaction = maxSatisfaction;
-                } else {
-                    satisfaction *= 1.2;
+            var value = getItemValue(item.getItem());
+            if (value != 0) {
+                result += getItemValue(item.getItem()) / satisfaction;
+                if (updateSatisfaction) {
+                    if (value > 0) {
+                        satisfaction *= 1.2;
+                    } else if (value < 0) {
+                        satisfaction *= 0.8;
+                    }
+                    if (satisfaction > maxSatisfaction) {
+                        satisfaction = maxSatisfaction;
+                    } else if (satisfaction < minSatisfaction) {
+                        satisfaction = minSatisfaction;
+                    }
                 }
             }
         }

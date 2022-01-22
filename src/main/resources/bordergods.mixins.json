@@ -4,9 +4,10 @@
   "package": "net.onelikeandidie.bordergods.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AddWhoDroppedItemMixin",
     "DroppedInLavaMixin",
     "ItemStackThrowerMixin",
-    "AddWhoDroppedItemMixin"
+    "WorldBorderSetCommandMixin"
   ],
   "client": [
   ],

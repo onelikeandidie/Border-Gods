@@ -9,6 +9,7 @@ import net.minecraft.util.ActionResult;
 public interface IGod {
     String getName();
     float getSatisfaction();
+    void resetSatisfaction();
     float getLastOfferingTime();
     ActionResult evaluateOffering(PlayerEntity player, BlockEntity block, ItemStack item);
 }
