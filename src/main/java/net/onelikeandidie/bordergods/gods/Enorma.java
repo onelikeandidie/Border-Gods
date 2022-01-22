@@ -60,7 +60,7 @@ public class Enorma implements IGod {
     }
 
     private double calculateNewBorder(double value, World world) {
-        return value / Border.get(world) * 1;
+        return value / Border.get(world) * 3;
     }
 
     private void sendOfferMessage(PlayerEntity player, ItemStack item, boolean good) {

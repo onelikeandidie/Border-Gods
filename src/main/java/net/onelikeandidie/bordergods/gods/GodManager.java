@@ -33,17 +33,6 @@ public class GodManager {
         logger.info("Now listening for God Offerings");
     }
 
-    public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher, boolean dedicated) {
-        // Listen for reset commands
-        dispatcher.register(CommandManager.literal("bordergods")
-                .then(CommandManager.literal("reset").executes(GodManager::resetCommand)));
-    }
-
-    private static int resetCommand(CommandContext<ServerCommandSource> context) {
-        resetSatisfactions();
-        return 1;
-    }
-
     private static ActionResult offeringGiven(PlayerEntity playerEntity, BlockEntity blockEntity, ItemStack itemStack) {
         for (IGod god : gods) {
             var result = god.evaluateOffering(playerEntity, blockEntity, itemStack);
