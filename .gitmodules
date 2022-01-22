@@ -1,0 +1,3 @@
+[submodule "src/main/java/fabric-simplelibs"]
+	path = src/main/java/fabric-simplelibs
+	url = https://github.com/magistermaks/fabric-simplelibs.git
