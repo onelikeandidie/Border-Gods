@@ -6,9 +6,9 @@ import net.minecraft.util.ActionResult;
 
 public interface TimeToMoveBorderCallback {
     Event<TimeToMoveBorderCallback> EVENT = EventFactory.createArrayBacked(TimeToMoveBorderCallback.class,
-            (listeners) -> () -> {
+            (listeners) -> (int newHour) -> {
                 for (TimeToMoveBorderCallback listener : listeners) {
-                    ActionResult result = listener.interact();
+                    ActionResult result = listener.interact(newHour);
 
                     if (result != ActionResult.PASS) {
                         return result;
@@ -17,5 +17,5 @@ public interface TimeToMoveBorderCallback {
                 return ActionResult.PASS;
             });
 
-    ActionResult interact();
+    ActionResult interact(int newHour);
 }
