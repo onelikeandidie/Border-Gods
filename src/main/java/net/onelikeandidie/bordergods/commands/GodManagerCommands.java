@@ -12,6 +12,8 @@ public class GodManagerCommands {
         // Listen for reset commands
         dispatcher.register(CommandManager.literal("bordergods")
                 .then(CommandManager.literal("reset").executes(GodManagerCommands::resetCommand)));
+        dispatcher.register(CommandManager.literal("bordergods")
+                .then(CommandManager.literal("get").executes(GodManagerCommands::getCommand)));
     }
 
     private static int resetCommand(CommandContext<ServerCommandSource> context) {
@@ -22,5 +24,10 @@ public class GodManagerCommands {
         }
         context.getSource().sendFeedback(Text.of("You need to be OP to run this command"), false);
         return -1;
+    }
+
+    private static int getCommand(CommandContext<ServerCommandSource> context) {
+        context.getSource().sendFeedback(GodManager.toList(), false);
+        return 1;
     }
 }

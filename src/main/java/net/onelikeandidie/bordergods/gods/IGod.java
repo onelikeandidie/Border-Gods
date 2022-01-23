@@ -8,6 +8,7 @@ import net.minecraft.util.ActionResult;
 
 public interface IGod {
     String getName();
+    Text getFormattedName();
     float getSatisfaction();
     void resetSatisfaction();
     float getLastOfferingTime();

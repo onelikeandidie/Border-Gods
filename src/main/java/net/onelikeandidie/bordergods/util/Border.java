@@ -3,6 +3,7 @@ package net.onelikeandidie.bordergods.util;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
 import net.onelikeandidie.bordergods.events.SomeoneSetWorldBorder;
+import net.onelikeandidie.bordergods.util.config.ConfigManager;
 
 public class Border {
     public static double finalBorderSize = -1;

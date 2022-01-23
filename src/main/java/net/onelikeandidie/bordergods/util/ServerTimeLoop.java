@@ -43,9 +43,7 @@ public class ServerTimeLoop {
     }
 
     static void hourPassed(int newHour) {
-        if (newHour == 17) {
-            TimeToMoveBorderCallback.EVENT.invoker().interact();
-        }
+        TimeToMoveBorderCallback.EVENT.invoker().interact(newHour);
     }
 
     static int millisecondsTillTheHour(@NotNull Calendar cal) {

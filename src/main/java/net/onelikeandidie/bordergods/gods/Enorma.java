@@ -4,27 +4,34 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
 import net.onelikeandidie.bordergods.util.Border;
-import net.onelikeandidie.bordergods.util.ServerUtils;
 
 public class Enorma implements IGod {
     static final String GOD_NAME = "Enorma";
-    static final Text GOD_NAME_FORMATED = Text.of(GOD_NAME);
+    static final Text GOD_NAME_FORMATED = Text.of(GOD_NAME).copy().setStyle(Style.EMPTY.withColor(7811093));
     float satisfaction;
     static final float maxSatisfaction = 20;
     static final float minSatisfaction = 1;
     float lastOfferingTime;
+    double multiplier;
 
-    Enorma() {
+    Enorma(double multiplier) {
+        this.multiplier = multiplier;
         satisfaction = 1;
     }
 
     @Override
     public String getName() {
         return GOD_NAME;
+    }
+
+    @Override
+    public Text getFormattedName() {
+        return GOD_NAME_FORMATED;
     }
 
     @Override
@@ -60,7 +67,7 @@ public class Enorma implements IGod {
     }
 
     private double calculateNewBorder(double value, World world) {
-        return value / Border.get(world) * 3;
+        return value / Border.get(world) * multiplier;
     }
 
     private void sendOfferMessage(PlayerEntity player, ItemStack item, boolean good) {
@@ -107,10 +114,10 @@ public class Enorma implements IGod {
         var itemName = item.getTranslationKey();
         return switch (itemName) {
             // ENORMA LIKES SHINY
-            case "item.minecraft.diamond" -> 64;
+            case "item.minecraft.diamond" -> 128;
             case "item.minecraft.gold_ingot" -> 32;
-            case "item.minecraft.emerald" -> 32;
-            case "item.minecraft.amethyst_shard" -> 32;
+            case "item.minecraft.emerald" -> 64;
+            case "item.minecraft.amethyst_shard" -> 8;
             // HAHA YOU CAN'T BURN THIS ONE IN LAVA
             case "item.minecraft.netherite_ingot" -> 128;
             // ENORMA DOESN'T LIKE PLANTS

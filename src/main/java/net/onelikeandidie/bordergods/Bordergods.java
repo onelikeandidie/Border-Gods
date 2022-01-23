@@ -13,6 +13,7 @@ import net.onelikeandidie.bordergods.listeners.TimeToMoveBorderListener;
 import net.onelikeandidie.bordergods.util.CommandRegister;
 import net.onelikeandidie.bordergods.util.ListenerRegister;
 import net.onelikeandidie.bordergods.util.ServerTimeLoop;
+import net.onelikeandidie.bordergods.util.config.ConfigManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,6 +27,8 @@ public class Bordergods implements ModInitializer {
     @Override
     public void onInitialize() {
         LOGGER.info("Border Gods Mod Initializing...");
+        // Load the config
+        ConfigManager.loadConfig();
         // Initialize time check to check the time every hour lol
         ServerTimeLoop.init();
         // Register event listeners
