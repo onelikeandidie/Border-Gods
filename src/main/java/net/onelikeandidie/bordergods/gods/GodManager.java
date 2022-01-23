@@ -12,6 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.onelikeandidie.bordergods.events.DroppedInLavaCallback;
 import net.onelikeandidie.bordergods.events.TimeToMoveBorderCallback;
+import net.onelikeandidie.bordergods.util.config.BorderGodsLoader;
 import net.onelikeandidie.bordergods.util.config.ConfigManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +31,7 @@ public class GodManager {
         // Listen for god offerings
         DroppedInLavaCallback.EVENT.register(GodManager::offeringGiven);
         TimeToMoveBorderCallback.EVENT.register((newHour) -> {
-            var config = ConfigManager.getConfig();
+            var config = BorderGodsLoader.getConfig();
             if (config.GOD_RESET_TIME.contains(newHour)) {
                 GodManager.resetSatisfactions();
             }
@@ -40,7 +41,7 @@ public class GodManager {
     }
 
     private static void loadGodsFromConfig() {
-        var config = ConfigManager.getConfig();
+        var config = BorderGodsLoader.getConfig();
         List<IGod> god_list = new ArrayList<>();
         if (!config.GOD_DISABLED.contains("Enorma")) {
             god_list.add(new Enorma(config.GOD_MULTIPLIERS.getOrDefault("Enorma", 3.0)));

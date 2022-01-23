@@ -3,6 +3,7 @@ package net.onelikeandidie.bordergods.listeners;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ActionResult;
 import net.onelikeandidie.bordergods.events.TimeToMoveBorderCallback;
+import net.onelikeandidie.bordergods.util.config.BorderGodsLoader;
 import net.onelikeandidie.bordergods.util.config.ConfigManager;
 import org.apache.logging.log4j.LogManager;
 
@@ -17,7 +18,7 @@ public class TimeToMoveBorderListener {
     }
 
     public ActionResult timeToMoveBorder(int newHour) {
-        var config = ConfigManager.getConfig();
+        var config = BorderGodsLoader.getConfig();
         if (config.BORDER_BASE_INCREASE_TIME.contains(newHour)) {
             var logger = LogManager.getLogger("bordergods");
             logger.info("Border supposedly moved");

@@ -9,6 +9,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
 import net.onelikeandidie.bordergods.util.Border;
+import net.onelikeandidie.bordergods.util.config.gods.EnormaLoader;
 
 public class Enorma implements IGod {
     static final String GOD_NAME = "Enorma";
@@ -112,18 +113,7 @@ public class Enorma implements IGod {
 
     private int getItemValue(Item item) {
         var itemName = item.getTranslationKey();
-        return switch (itemName) {
-            // ENORMA LIKES SHINY
-            case "item.minecraft.diamond" -> 128;
-            case "item.minecraft.gold_ingot" -> 32;
-            case "item.minecraft.emerald" -> 64;
-            case "item.minecraft.amethyst_shard" -> 8;
-            // HAHA YOU CAN'T BURN THIS ONE IN LAVA
-            case "item.minecraft.netherite_ingot" -> 128;
-            // ENORMA DOESN'T LIKE PLANTS
-            case "block.minecraft.lily_pad" -> -64;
-            case "block.minecraft.sugar_cane" -> -64;
-            default -> 0;
-        };
+        var config = EnormaLoader.getConfig();
+        return config.valueSet.getOrDefault(itemName, 0);
     }
 }
