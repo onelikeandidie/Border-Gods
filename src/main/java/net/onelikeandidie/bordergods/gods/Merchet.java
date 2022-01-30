@@ -1,31 +1,30 @@
 package net.onelikeandidie.bordergods.gods;
 
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
-import net.onelikeandidie.bordergods.events.DroppedInLavaCallback;
+import net.onelikeandidie.bordergods.events.VillagerLeveledUpCallback;
 import net.onelikeandidie.bordergods.util.Border;
-import net.onelikeandidie.bordergods.util.config.gods.EnormaLoader;
+import net.onelikeandidie.bordergods.util.config.gods.AnullisLoader;
+import net.onelikeandidie.bordergods.util.config.gods.MerchetLoader;
 
-public class Enorma implements IGod {
-    static final String GOD_NAME = "Enorma";
-    static final Text GOD_NAME_FORMATED = Text.of(GOD_NAME).copy().setStyle(Style.EMPTY.withColor(7811093));
+public class Merchet implements IGod {
+    static final String GOD_NAME = "Merchet";
+    static final Text GOD_NAME_FORMATED = Text.of(GOD_NAME).copy().setStyle(Style.EMPTY.withColor(61101));
     float satisfaction;
     static final float maxSatisfaction = 20;
     static final float minSatisfaction = 1;
     float lastOfferingTime;
     double multiplier;
 
-    Enorma(double multiplier) {
+    Merchet(double multiplier) {
         this.multiplier = multiplier;
         satisfaction = 1;
         // Register stuff
-        DroppedInLavaCallback.EVENT.register(this::evaluateOffering);
+        VillagerLeveledUpCallback.EVENT.register(this::evaluateOffering);
     }
 
     @Override
@@ -63,28 +62,15 @@ public class Enorma implements IGod {
         return this.lastOfferingTime;
     }
 
-    public ActionResult evaluateOffering(PlayerEntity player, BlockEntity block, ItemStack item) {
-        var stack_value = getItemStackValue(item);
-        var world = player.getWorld();
-        var increase = calculateNewBorder(stack_value, world);
-        Border.add(world, increase, 1000);
-        return ActionResult.PASS;
-    }
-
-    private double calculateNewBorder(double value, World world) {
-        return value / Border.get(world) * multiplier;
-    }
-
-    private double getItemStackValue(ItemStack item) {
-        double result = 0;
-        for (int i = 0; i < item.getCount(); i++) {
-            var value = getItemValue(item.getItem());
-            if (value != 0) {
-                result += getItemValue(item.getItem()) / satisfaction;
-                updateSatisfaction(value > 0);
-            }
+    public ActionResult evaluateOffering(VillagerEntity entity) {
+        var config = MerchetLoader.getConfig();
+        var world = entity.getWorld();
+        var increase = config.baseIncrease;
+        if (increase != 0) updateSatisfaction(increase > 0);
+        if (satisfaction < maxSatisfaction) {
+            Border.add(world, increase, 1000);
         }
-        return result;
+        return ActionResult.PASS;
     }
 
     private void updateSatisfaction(boolean increase) {
@@ -101,9 +87,7 @@ public class Enorma implements IGod {
         }
     }
 
-    private int getItemValue(Item item) {
-        var itemName = item.getTranslationKey();
-        var config = EnormaLoader.getConfig();
-        return config.valueSet.getOrDefault(itemName, 0);
+    private double calculateNewBorder(double value, World world) {
+        return Border.get(world) * multiplier;
     }
 }

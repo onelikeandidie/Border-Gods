@@ -11,6 +11,6 @@ public interface IGod {
     Text getFormattedName();
     float getSatisfaction();
     void resetSatisfaction();
+    void decaySatisfaction();
     float getLastOfferingTime();
-    ActionResult evaluateOffering(PlayerEntity player, BlockEntity block, ItemStack item);
 }

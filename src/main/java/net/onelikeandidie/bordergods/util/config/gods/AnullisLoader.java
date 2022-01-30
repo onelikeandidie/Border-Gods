@@ -1,68 +1,60 @@
 package net.onelikeandidie.bordergods.util.config.gods;
 
-import com.amihaiemil.eoyaml.Yaml;
 import com.amihaiemil.eoyaml.YamlMapping;
 import com.amihaiemil.eoyaml.YamlNode;
-import net.fabricmc.loader.api.FabricLoader;
 import net.onelikeandidie.bordergods.util.ServerUtils;
 import net.onelikeandidie.bordergods.util.config.ConfigUtil;
 import net.onelikeandidie.bordergods.util.config.ReloadableLoader;
 import net.onelikeandidie.bordergods.util.config.YAMLLoader;
-import net.onelikeandidie.bordergods.util.config.external.simpleconfig.SimpleConfig;
+import org.apache.logging.log4j.core.jmx.Server;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.HashMap;
 
-public class EnormaLoader implements ReloadableLoader {
-    static EnormaConfig config;
+public class AnullisLoader implements ReloadableLoader {
+    static AnullisConfig config;
     static String path;
 
     public static void loadConfig(String pathname) {
-        loadConfig(pathname, defaultProvider());
+        AnullisLoader.loadConfig(pathname, AnullisLoader.defaultProvider());
     }
 
     public static void loadConfig(String pathname, String provider) {
         path = pathname;
         var configYaml = YAMLLoader.loadConfig(path, provider);
-        parseConfig(configYaml);
+        AnullisLoader.parseConfig(configYaml);
     }
 
     protected static String defaultProvider() {
         return """
-                # Value of items sacrificed
+                # Value of entities sacrificed
                 values:
-                  # ENORMA LIKES SHINY
-                  - item.minecraft.diamond=128
-                  - item.minecraft.gold_ingot=32
-                  - item.minecraft.emerald=64
-                  - item.minecraft.amethyst_shard=8
-                  - block.minecraft.amethyst_block=32
-                  # HAHA YOU CAN'T BURN THIS ONE IN LAVA
-                  - item.minecraft.netherite_ingot=256
-                  # ENORMA DOESN'T LIKE PLANTS
-                  - block.minecraft.lily_pad=-64
-                  - block.minecraft.sugar_cane=-64
+                  # ANULLIS LIKES MEAT
+                  - net.minecraft.entity.passive.SheepEntity=8
+                  - net.minecraft.entity.passive.CowEntity=8
+                  - net.minecraft.entity.passive.RabbitEntity=16
+                  # ANULLIS DOESN'T LIKE PORK
+                  - net.minecraft.entity.passive.PigEntity=-64
                 """;
     }
 
     protected static void parseConfig(YamlMapping CONFIG_FILE) {
-        config = new EnormaConfig();
+        config = new AnullisConfig();
         var values = CONFIG_FILE.yamlSequence("values").values();
         config.valueSet = new HashMap<>();
         for (YamlNode value : values) {
             var pair = ConfigUtil.parsePairStrInt(value.asScalar().value());
-            if (pair != null) config.valueSet.put(pair.getLeft(), pair.getRight());
+            if (pair != null) {
+                config.valueSet.put(pair.getLeft(), pair.getRight());
+            }
         }
     }
 
-    public static EnormaConfig getConfig() {
+    public static AnullisConfig getConfig() {
         return config;
     }
 
     public static void reloadConfig() {
-        loadConfig(getPath());
+        AnullisLoader.loadConfig(AnullisLoader.getPath());
     }
 
     public static String getPath() {
