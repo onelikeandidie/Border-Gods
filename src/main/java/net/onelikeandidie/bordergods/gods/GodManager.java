@@ -11,7 +11,9 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.onelikeandidie.bordergods.events.DroppedInLavaCallback;
+import net.onelikeandidie.bordergods.events.RandomMinuteCallback;
 import net.onelikeandidie.bordergods.events.TimeToMoveBorderCallback;
+import net.onelikeandidie.bordergods.util.ServerUtils;
 import net.onelikeandidie.bordergods.util.config.BorderGodsLoader;
 import net.onelikeandidie.bordergods.util.config.ConfigManager;
 import org.apache.logging.log4j.LogManager;
@@ -27,16 +29,9 @@ public class GodManager {
         Logger logger = LogManager.getLogger("bordergods");
         // Load not disabled gods and their multipliers
         loadGodsFromConfig();
+        // Register decay listener
+        RandomMinuteCallback.EVENT.register(GodManager::decaySatisfactions);
         logger.info("Initialized God Manager with {} gods", gods.size());
-        // Listen for god offerings
-        DroppedInLavaCallback.EVENT.register(GodManager::offeringGiven);
-        TimeToMoveBorderCallback.EVENT.register((newHour) -> {
-            var config = BorderGodsLoader.getConfig();
-            if (config.GOD_RESET_TIME.contains(newHour)) {
-                GodManager.resetSatisfactions();
-            }
-            return ActionResult.PASS;
-        });
         logger.info("Now listening for God Offerings");
     }
 
@@ -44,21 +39,45 @@ public class GodManager {
         var config = BorderGodsLoader.getConfig();
         List<IGod> god_list = new ArrayList<>();
         if (!config.GOD_DISABLED.contains("Enorma")) {
-            god_list.add(new Enorma(config.GOD_MULTIPLIERS.getOrDefault("Enorma", 3.0)));
+            var enorma = new Enorma(config.GOD_MULTIPLIERS.getOrDefault("Enorma", 3.0));
+            god_list.add(enorma);
+        }
+        if (!config.GOD_DISABLED.contains("Anullis")) {
+            var anullis = new Anullis(config.GOD_MULTIPLIERS.getOrDefault("Anullis", 1.0));
+            god_list.add(anullis);
+        }
+        if (!config.GOD_DISABLED.contains("Merchet")) {
+            var merchet = new Merchet(config.GOD_MULTIPLIERS.getOrDefault("Merchet", 3.0));
+            god_list.add(merchet);
         }
         gods = god_list;
-    }
-
-    private static ActionResult offeringGiven(PlayerEntity playerEntity, BlockEntity blockEntity, ItemStack itemStack) {
-        for (IGod god : gods) {
-            var result = god.evaluateOffering(playerEntity, blockEntity, itemStack);
-        }
-        return ActionResult.PASS;
     }
 
     public static void resetSatisfactions() {
         for (IGod god: gods) {
             god.resetSatisfaction();
+        }
+    }
+
+    public static ActionResult decaySatisfactions() {
+        for (IGod god: gods) {
+            god.decaySatisfaction();
+        }
+        return ActionResult.PASS;
+    }
+
+    public static void sendOfferMessage(IGod god, boolean good) {
+        MutableText message = (MutableText) Text.of("");
+        message.append(god.getFormattedName());
+        message.append(" ");
+        if (good) {
+            message.append("grows satisfied");
+        } else {
+            message = Text.of("grows ever unsatisfied").copy();
+        }
+        var players = ServerUtils.getServer().getPlayerManager().getPlayerList();
+        for (PlayerEntity player : players) {
+             player.sendMessage(message, true);
         }
     }
 

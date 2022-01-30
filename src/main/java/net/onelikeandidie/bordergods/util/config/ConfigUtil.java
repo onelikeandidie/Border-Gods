@@ -61,4 +61,21 @@ public class ConfigUtil {
         }
         return null;
     }
+
+    /**
+     * For parsing Key=Value pairs
+     */
+    public static Pair<String, String> parsePairStr(String string) {
+        var entry = string.split("=");
+        Pair<String, String> pair = null;
+        if (entry.length == 2) {
+            var key = entry[0];
+            if (entry[1].endsWith(";")) {
+                entry[1] = entry[1].substring(0, entry[1].length() - 1);
+            }
+            var value = entry[1];
+            return new Pair<>(key, value);
+        }
+        return null;
+    }
 }
