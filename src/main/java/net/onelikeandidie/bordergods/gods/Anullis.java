@@ -10,7 +10,9 @@ import net.minecraft.world.World;
 import net.onelikeandidie.bordergods.events.DroppedInLavaCallback;
 import net.onelikeandidie.bordergods.events.KilledByLavaCallback;
 import net.onelikeandidie.bordergods.util.Border;
+import net.onelikeandidie.bordergods.util.ServerUtils;
 import net.onelikeandidie.bordergods.util.config.gods.AnullisLoader;
+import org.apache.logging.log4j.LogManager;
 
 public class Anullis implements IGod {
     static final String GOD_NAME = "Anullis";
@@ -64,10 +66,11 @@ public class Anullis implements IGod {
     }
 
     public ActionResult evaluateOffering(LivingEntity entity) {
+        var logger = LogManager.getLogger("bordergods");
         var entityClass =  entity.getClass();
         var config = AnullisLoader.getConfig();
         try {
-            var entityType = entityClass.getTypeName();
+            var entityType = entity.getType().getTranslationKey();
             var value = config.valueSet.get(entityType);
             var calc = value / satisfaction;
             if (value != 0) updateSatisfaction(value > 0);

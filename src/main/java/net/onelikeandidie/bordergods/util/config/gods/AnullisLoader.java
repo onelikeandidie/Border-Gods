@@ -29,11 +29,11 @@ public class AnullisLoader implements ReloadableLoader {
                 # Value of entities sacrificed
                 values:
                   # ANULLIS LIKES MEAT
-                  - net.minecraft.entity.passive.SheepEntity=8
-                  - net.minecraft.entity.passive.CowEntity=8
-                  - net.minecraft.entity.passive.RabbitEntity=16
+                  - entity.minecraft.sheep=8
+                  - entity.minecraft.cow=8
+                  - entity.minecraft.rabbit=16
                   # ANULLIS DOESN'T LIKE PORK
-                  - net.minecraft.entity.passive.PigEntity=-64
+                  - entity.minecraft.pig=-64
                 """;
     }
 

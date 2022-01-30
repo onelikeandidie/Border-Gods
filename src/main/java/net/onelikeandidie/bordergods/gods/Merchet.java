@@ -78,8 +78,8 @@ public class Merchet implements IGod {
     }
 
     private void updateSatisfaction(boolean increase, boolean notify) {
-        if (increase) satisfaction *= 1.2;
-        if (!increase) satisfaction *= 0.8;
+        if (increase) satisfaction += 2.4;
+        if (!increase) satisfaction -= 1.2;
         if (satisfaction > maxSatisfaction) satisfaction = maxSatisfaction;
         if (satisfaction < minSatisfaction) satisfaction = minSatisfaction;
         if (notify) {
@@ -88,6 +88,6 @@ public class Merchet implements IGod {
     }
 
     private double calculateNewBorder(double value, World world) {
-        return Border.get(world) * multiplier;
+        return value * multiplier;
     }
 }
